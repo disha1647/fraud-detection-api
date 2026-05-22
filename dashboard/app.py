@@ -44,8 +44,22 @@ username = st.session_state.get("username")
 if auth_status == False:
     st.error("Username ya password galat hai!")
     st.stop()
-elif auth_status == None:
+elif auth_status is None:
+    st.markdown("### 🛡️ FraudShield AI")
     st.warning("Please login karein")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        st.info("**Demo credentials:**\nUsername: `demo`\nPassword: `demo123`")
+    with col2:
+        st.info("**Your account:**\nUsername: `disha`\nPassword: `password123`")
+    
+    if st.button("🚀 Guest Demo Access — No login needed", type="primary", use_container_width=True):
+        st.session_state["authentication_status"] = True
+        st.session_state["name"] = "Guest"
+        st.session_state["username"] = "guest"
+        st.rerun()
+    
     st.stop()
 
 authenticator.logout("Logout", "sidebar", key="logout_btn")

@@ -25,3 +25,7 @@ models/
 
 # Windows
 Thumbs.db
+data/creditcard.csv
+.venv/
+__pycache__/
+*.pkl
