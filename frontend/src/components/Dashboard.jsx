@@ -8,7 +8,7 @@ const C = {
   text: "#e2e8f0", muted: "#64748b", dim: "#1a2540"
 };
 
-const API = "http://localhost:8000";
+const API = "https://fraudshield-api.onrender.com";
 
 function generateTx() {
   const fraud = Math.random() < 0.15;
