@@ -1,4 +1,5 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import sys
 import os
@@ -6,11 +7,19 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from src.predict import predict_transaction
 
-# ─── APP SETUP ─────────────────────────────────────────────
+# ✅ Pehle app banao
 app = FastAPI(
     title="Fraud Detection API",
     description="Real-time credit card fraud detection using LightGBM | Built by Disha",
     version="1.0.0"
+)
+
+# ✅ Phir middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # ─── REQUEST SCHEMA ────────────────────────────────────────

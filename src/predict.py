@@ -21,15 +21,36 @@ def predict_transaction(features: dict):
     
     df = pd.DataFrame([features])
     
-    # ✅ Alag alag scale karo
+    # ✅ DEBUG — yeh print karo
+    print(f"Input columns: {df.columns.tolist()}")
+    print(f"Amount: {df['Amount'].values}, Time: {df['Time'].values}")
+    
+    # Class column aa rahi ho toh drop karo
+    if 'Class' in df.columns:
+        df = df.drop(['Class'], axis=1)
+    
     df['Amount_scaled'] = amount_scaler.transform(df[['Amount']])
     df['Time_scaled'] = time_scaler.transform(df[['Time']])
-    
-    # Original drop karo
     df = df.drop(['Amount', 'Time'], axis=1)
     
+    # Model ke expected features
+    try:
+        expected_cols = model.feature_name_
+    except:
+        expected_cols = model.booster_.feature_name()
+    
+    print(f"Expected cols: {expected_cols[:5]}")
+    print(f"Got cols: {df.columns.tolist()[:5]}")
+    
+    for col in expected_cols:
+        if col not in df.columns:
+            df[col] = 0
+    df = df[expected_cols]
+    
     prob = model.predict_proba(df)[0][1]
-    prediction = int(prob > 0.5)
+    print(f"Probability: {prob}")
+    
+    prediction = int(prob > 0.3)
     
     return {
         "is_fraud": bool(prediction),
